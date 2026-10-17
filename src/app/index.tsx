@@ -1,5 +1,6 @@
 import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnimatedIcon } from '@/components/animated-icon';
@@ -29,14 +30,26 @@ function getDevMenuHint() {
 }
 
 export default function HomeScreen() {
+  const [pressCount, setPressCount] = useState(0);
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ThemedView style={styles.heroSection}>
           <AnimatedIcon />
           <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
+            Vortex&apos;s&nbsp;Budget
+                  </ThemedText>
+
+          <Pressable
+            onPress={() => setPressCount((count) => count + 1)}
+            style={({ pressed }) => pressed && styles.pressed}>
+            <ThemedView type="backgroundElement" style={styles.counterButton}>
+              <ThemedText>
+                Pressed {pressCount} {pressCount === 1 ? 'time' : 'times'}
+              </ThemedText>
+            </ThemedView>
+          </Pressable>
         </ThemedView>
 
         <ThemedText type="code" style={styles.code}>
@@ -87,6 +100,14 @@ const styles = StyleSheet.create({
   },
   code: {
     textTransform: 'uppercase',
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+  counterButton: {
+    paddingHorizontal: Spacing.four,
+    paddingVertical: Spacing.two,
+    borderRadius: Spacing.five,
   },
   stepContainer: {
     gap: Spacing.three,
